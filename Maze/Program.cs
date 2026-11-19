@@ -11,7 +11,7 @@ namespace Maze
             string basePath = AppContext.BaseDirectory;
             string levelData = Path.Combine(basePath, @"..\..\..\Levels.txt");
 
-            int numberOfLevels = File.ReadAllLines(levelData).Length;
+            int numberOfLevels = File.ReadAllLines(levelData).Length / 8;
             int levelNumber = 1;
             string[,] tiles = GetTiles(levelData, levelNumber);
             Vec2 startPoint = FindTile(tiles, "O");
