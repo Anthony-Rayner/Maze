@@ -191,7 +191,7 @@ namespace Maze
                     position.y = 0;
                 }
 
-                if (tiles[position.x, position.y] == "#")
+                if (tiles[position.x, position.y] == "▓")
                 {
                     position.x -= amount.x;
                     position.y -= amount.y;
