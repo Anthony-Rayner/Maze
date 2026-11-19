@@ -11,11 +11,14 @@ namespace Maze
             string basePath = AppContext.BaseDirectory;
             string levelData = Path.Combine(basePath, @"..\..\..\Levels.txt");
 
+            const string startChar = "O";
+            const string endChar = "X";
+
             int numberOfLevels = File.ReadAllLines(levelData).Length / 8;
             int levelNumber = 1;
             string[,] tiles = GetTiles(levelData, levelNumber);
-            Vec2 startPoint = FindTile(tiles, "O");
-            Vec2 endPoint = FindTile(tiles, "X");
+            Vec2 startPoint = FindTile(tiles, startChar);
+            Vec2 endPoint = FindTile(tiles, endChar);
 
             // Set up entities (including player). 
             Entity[] entities = new Entity[100];
@@ -46,12 +49,32 @@ namespace Maze
                 {
                     moveAmount.y += 1;
                 }
+                // Reset level.
                 else if (key == 'r')
                 {
                     tiles = GetTiles(levelData, levelNumber);
                     player.position = startPoint;
                 }
-                Console.WriteLine("ha");
+                // Debug mode.
+                else if (key == 'z')
+                {
+                    // Get input.
+                    Console.Clear();
+                    string input = "";
+                    int result = 0;
+                    while (!int.TryParse(input, out result))
+                    {
+                        Console.Write("Enter level to warp to: ");
+                        input = Console.ReadLine();
+                    }
+
+                    // Warp.
+                    levelNumber = result;
+                    tiles = GetTiles(levelData, levelNumber);
+                    startPoint = FindTile(tiles, startChar);
+                    endPoint = FindTile(tiles, endChar);
+                    player.position = startPoint;
+                }
 
                 player.Move(moveAmount, tiles);
 
@@ -66,8 +89,8 @@ namespace Maze
                     else
                     {
                         tiles = GetTiles(levelData, levelNumber);
-                        startPoint = FindTile(tiles, "O");
-                        endPoint = FindTile(tiles, "X");
+                        startPoint = FindTile(tiles, startChar);
+                        endPoint = FindTile(tiles, endChar);
                         player.position = startPoint;
                     }
                 }
