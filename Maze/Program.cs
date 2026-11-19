@@ -29,7 +29,7 @@ namespace Maze
             while (true)
             {
                 // Draw and get input. 
-                DisplayTiles(tiles, entities);
+                DisplayTiles(tiles, entities, "Stage: " + levelNumber + "/" + numberOfLevels);
                 char key = Console.ReadKey().KeyChar;
 
                 // Move player. 
@@ -111,10 +111,16 @@ namespace Maze
         }
 
 
-        static void DisplayTiles(string[,] tiles, Entity[] entities)
+        static void DisplayTiles(string[,] tiles, Entity[] entities, string title = "")
         {
             // Clear console so it can be updated. 
             Console.Clear();
+
+            // Write stage number.
+            if (title != "")
+            {
+                Console.WriteLine(title + "\n");
+            }
 
             // Draw each tile, iterating through them. 
             for (int y = 0; y < tiles.GetLength(1); y++)
