@@ -191,10 +191,32 @@ namespace Maze
                     position.y = 0;
                 }
 
+                // Collide player with walls.
                 if (tiles[position.x, position.y] == "▓")
                 {
                     position.x -= amount.x;
                     position.y -= amount.y;
+                }
+                else if (tiles[position.x, position.y] == "░")
+                {
+                    // Collide block with boundaries.
+                    if (position.x + amount.x < 0 || position.x + amount.x > 15 || position.y + amount.y < 0 || position.y + amount.y > 7)
+                    {
+                        position.x -= amount.x;
+                        position.y -= amount.y;
+                    }
+                    // Push block forwards.
+                    else if (tiles[position.x + amount.x, position.y + amount.y] == ".")
+                    {
+                        tiles[position.x, position.y] = ".";
+                        tiles[position.x + amount.x, position.y + amount.y] = "░";
+                    }
+                    // Collide block with walls.
+                    else
+                    {
+                        position.x -= amount.x;
+                        position.y -= amount.y;
+                    }
                 }
             }
 
