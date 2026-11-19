@@ -22,10 +22,6 @@ namespace Maze
             Entity player = new Entity("0", startPoint.x, startPoint.y);
             entities[99] = player;
 
-            //Console.WriteLine(endPoint.x);
-            //Console.WriteLine(endPoint.y);
-            //Environment.Exit(0);
-
             while (true)
             {
                 // Draw and get input. 
@@ -50,6 +46,13 @@ namespace Maze
                 {
                     moveAmount.y += 1;
                 }
+                else if (key == 'r')
+                {
+                    tiles = GetTiles(levelData, levelNumber);
+                    player.position = startPoint;
+                }
+                Console.WriteLine("ha");
+
                 player.Move(moveAmount, tiles);
 
                 // Check if player has beaten the level.
