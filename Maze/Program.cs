@@ -22,6 +22,10 @@ namespace Maze
             Entity player = new Entity("0", startPoint.x, startPoint.y);
             entities[99] = player;
 
+            //Console.WriteLine(endPoint.x);
+            //Console.WriteLine(endPoint.y);
+            //Environment.Exit(0);
+
             while (true)
             {
                 // Draw and get input. 
@@ -49,7 +53,7 @@ namespace Maze
                 player.Move(moveAmount, tiles);
 
                 // Check if player has beaten the level.
-                if (player.position == endPoint)
+                if (Equals(player.position, endPoint))
                 {
                     levelNumber += 1;
                     if (levelNumber > numberOfLevels)
@@ -67,6 +71,7 @@ namespace Maze
 
         static void EndGame()
         {
+            Console.Clear();
             Console.WriteLine("Congratulations!\nYou have escaped the maze.");
             Environment.Exit(0);
         }
@@ -142,6 +147,13 @@ namespace Maze
             return "";
         }
 
+
+        static bool Equals(Vec2 a, Vec2 b)
+        {
+            return a.x == b.x && a.y == b.y;
+        }
+
+
         class Entity
         {
             public string sprite;
@@ -185,16 +197,7 @@ namespace Maze
             }
         }
 
-        class Vec2
-        {
-            public int x;
-            public int y;
 
-            public Vec2(int x, int y)
-            {
-                this.x = x;
-                this.y = y;
-            }
-        }
+        record struct Vec2(int x, int y);
     }
 }
