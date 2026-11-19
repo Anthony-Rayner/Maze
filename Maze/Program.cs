@@ -63,6 +63,9 @@ namespace Maze
                     else
                     {
                         tiles = GetTiles(levelData, levelNumber);
+                        startPoint = FindTile(tiles, "O");
+                        endPoint = FindTile(tiles, "X");
+                        player.position = startPoint;
                     }
                 }
             }
