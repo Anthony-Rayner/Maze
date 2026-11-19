@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Net;
+using System.Runtime.CompilerServices;
 
 namespace Maze
 {
@@ -18,7 +19,7 @@ namespace Maze
 
             // Set up entities (including player). 
             Entity[] entities = new Entity[100];
-            Entity player = new Entity("0", 1, 1);
+            Entity player = new Entity("0", startPoint.x, startPoint.y);
             entities[99] = player;
 
             while (true)
@@ -46,7 +47,28 @@ namespace Maze
                     moveAmount.y += 1;
                 }
                 player.Move(moveAmount, tiles);
+
+                // Check if player has beaten the level.
+                if (player.position == endPoint)
+                {
+                    levelNumber += 1;
+                    if (levelNumber > numberOfLevels)
+                    {
+                        EndGame();
+                    }
+                    else
+                    {
+                        tiles = GetTiles(levelData, levelNumber);
+                    }
+                }
             }
+        }
+
+
+        static void EndGame()
+        {
+            Console.WriteLine("Congratulations!\nYou have escaped the maze.");
+            Environment.Exit(0);
         }
 
 
