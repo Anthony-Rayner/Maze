@@ -23,6 +23,7 @@ namespace Maze
             // Set up entities (including player). 
             Entity[] entities = new Entity[100];
             Entity player = new Entity("0", startPoint.x, startPoint.y);
+
             entities[99] = player;
 
             while (true)
@@ -60,9 +61,9 @@ namespace Maze
                 {
                     // Get input.
                     Console.Clear();
-                    string input = "";
+                    string? input = "";
                     int result = 0;
-                    while (!int.TryParse(input, out result))
+                    while (!int.TryParse(input, out result) || result < 0 || result > numberOfLevels)
                     {
                         Console.Write("Enter level to warp to: ");
                         input = Console.ReadLine();
@@ -225,6 +226,8 @@ namespace Maze
                 }
                 else if (tiles[position.x, position.y] == "░")
                 {
+                    string[] solids = ["▓", "░"];
+
                     // Collide block with boundaries.
                     if (position.x + amount.x < 0 || position.x + amount.x > 15 || position.y + amount.y < 0 || position.y + amount.y > 7)
                     {
@@ -232,7 +235,7 @@ namespace Maze
                         position.y -= amount.y;
                     }
                     // Push block forwards.
-                    else if (tiles[position.x + amount.x, position.y + amount.y] == ".")
+                    else if (!solids.Contains(tiles[position.x + amount.x, position.y + amount.y]))
                     {
                         tiles[position.x, position.y] = ".";
                         tiles[position.x + amount.x, position.y + amount.y] = "░";
