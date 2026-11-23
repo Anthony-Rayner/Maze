@@ -149,12 +149,13 @@ namespace Maze
                 Console.WriteLine(title + "\n");
             }
 
-            Console.WriteLine("▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓");
+            Console.WriteLine("+------------------+");
+            Console.WriteLine("|▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓|");
 
             // Draw each tile, iterating through them. 
             for (int y = 0; y < tiles.GetLength(1); y++)
             {
-                Console.Write("▓");
+                Console.Write("|▓");
                 for (int x = 0; x < tiles.GetLength(0); x++)
                 {
                     string entitySprite = IsEntityInSpace(entities, x, y);
@@ -167,10 +168,11 @@ namespace Maze
                         Console.Write(entitySprite);
                     }
                 }
-                Console.Write("▓\n");
+                Console.Write("▓|\n");
             }
 
-            Console.WriteLine("▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓");
+            Console.WriteLine("|▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓|");
+            Console.WriteLine("+------------------+");
         }
 
         static string IsEntityInSpace(Entity[] entities, int x, int y)
