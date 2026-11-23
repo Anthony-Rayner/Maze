@@ -233,21 +233,11 @@ namespace Maze
                 }
                 else if (tiles[position.x, position.y] == "░")
                 {
-                    string[] solids = ["▓", "░"];
-
-                    // Collide block with boundaries.
-                    if (position.x + amount.x < 0 || position.x + amount.x > 15 || position.y + amount.y < 0 || position.y + amount.y > 7)
-                    {
-                        position.x -= amount.x;
-                        position.y -= amount.y;
-                    }
-                    // Push block forwards.
-                    else if (!solids.Contains(tiles[position.x + amount.x, position.y + amount.y]))
+                    if (CanPush(tiles, position, amount))
                     {
                         tiles[position.x, position.y] = ".";
                         tiles[position.x + amount.x, position.y + amount.y] = "░";
                     }
-                    // Collide block with walls.
                     else
                     {
                         position.x -= amount.x;
@@ -261,6 +251,46 @@ namespace Maze
                 this.sprite = sprite;
                 this.position.x = x;
                 this.position.y = y;
+            }
+        }
+
+
+        static void Push(string[,] tiles, Vec2 position, Vec2 amount)
+        {
+            Vec2 logicPosition = new Vec2(position.x + amount.x, position.y + amount.y);
+            while (tiles[position.x, position.y] == "░")
+            {
+                logicPosition = new Vec2(logicPosition.x + amount.x, logicPosition.y + amount.y);
+            }
+            while (logicPosition != position)
+            {
+                tiles[logicPosition.x, logicPosition.y] = "░";
+            }
+        }
+
+
+        static bool CanPush(string[,] tiles, Vec2 position, Vec2 amount)
+        {
+            Vec2 pushPosition = new Vec2(position.x + amount.x, position.y + amount.y);
+            // World boundaries.
+            if (pushPosition.x < 0 || pushPosition.x > 15 || pushPosition.y < 0 || pushPosition.y > 7)
+            {
+                return false;
+            }
+            // Solid wall.
+            else if (tiles[pushPosition.x, pushPosition.y] == "▓")
+            {
+                return false;
+            }
+            // Chain of blocks.
+            else if (tiles[pushPosition.x, pushPosition.y] == "░")
+            {
+                return CanPush(tiles, pushPosition, amount);
+            }
+            // Empty space.
+            else
+            {
+                return true;
             }
         }
 
