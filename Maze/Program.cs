@@ -12,7 +12,7 @@ namespace Maze
             string levelData = Path.Combine(basePath, @"..\..\..\Levels.txt");
 
             const string startChar = "O";
-            const string endChar = "X";
+            const string endChar = "E";
 
             int numberOfLevels = File.ReadAllLines(levelData).Length / 8;
             int levelNumber = 1;
