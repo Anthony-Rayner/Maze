@@ -235,8 +235,7 @@ namespace Maze
                 {
                     if (CanPush(tiles, position, amount))
                     {
-                        tiles[position.x, position.y] = ".";
-                        tiles[position.x + amount.x, position.y + amount.y] = "░";
+                        Push(tiles, position, amount);
                     }
                     else
                     {
@@ -258,14 +257,16 @@ namespace Maze
         static void Push(string[,] tiles, Vec2 position, Vec2 amount)
         {
             Vec2 logicPosition = new Vec2(position.x + amount.x, position.y + amount.y);
-            while (tiles[position.x, position.y] == "░")
+            while (tiles[logicPosition.x, logicPosition.y] == "░")
             {
                 logicPosition = new Vec2(logicPosition.x + amount.x, logicPosition.y + amount.y);
             }
             while (logicPosition != position)
             {
                 tiles[logicPosition.x, logicPosition.y] = "░";
+                logicPosition = new Vec2(logicPosition.x - amount.x, logicPosition.y - amount.y);
             }
+            tiles[logicPosition.x, logicPosition.y] = ".";
         }
 
 
