@@ -21,10 +21,9 @@ namespace Maze
             Vec2 endPoint = FindTile(tiles, endChar);
 
             // Set up entities (including player). 
-            Entity[] entities = new Entity[100];
+            List<Entity> entities = GetEntities(levelData, levelNumber);
             Entity player = new Entity("0", startPoint.x, startPoint.y);
-
-            entities[99] = player;
+            entities.Add(player);
 
             while (true)
             {
@@ -75,6 +74,8 @@ namespace Maze
                     startPoint = FindTile(tiles, startChar);
                     endPoint = FindTile(tiles, endChar);
                     player.position = startPoint;
+                    entities = GetEntities(levelData, levelNumber);
+                    entities.Add(player);
                 }
 
                 player.Move(moveAmount, tiles);
@@ -90,6 +91,8 @@ namespace Maze
                     else
                     {
                         tiles = GetTiles(levelData, levelNumber);
+                        entities = GetEntities(levelData, levelNumber);
+                        entities.Add(player);
                         startPoint = FindTile(tiles, startChar);
                         endPoint = FindTile(tiles, endChar);
                         player.position = startPoint;
@@ -131,14 +134,41 @@ namespace Maze
             {
                 for (int x = 0; x < lines[y].Length; x++)
                 {
-                    tiles[x, y % 8] = Convert.ToString(lines[y][x]);
+                    string tile = Convert.ToString(lines[y][x]);
+                    if (tile == "*")
+                    {
+                        tiles[x, y % 8] = ".";
+                    }
+                    else
+                    {
+                        tiles[x, y % 8] = tile;
+                    }
                 }
             }
             return tiles;
         }
 
 
-        static void DisplayTiles(string[,] tiles, Entity[] entities, string title = "")
+        static List<Entity> GetEntities(string levelData, int levelNumber)
+        {
+            List<Entity> entities = new List<Entity>();
+            string[] lines = File.ReadAllLines(levelData);
+            for (int y = (levelNumber - 1) * 8; y < (levelNumber) * 8; y += 1)
+            {
+                for (int x = 0; x < lines[y].Length; x++)
+                {
+                    string tile = Convert.ToString(lines[y][x]);
+                    if (tile == "*")
+                    {
+                        entities.Add(new Entity("*", x, y));
+                    }
+                }
+            }
+            return entities;
+        }
+
+
+        static void DisplayTiles(string[,] tiles, List<Entity> entities, string title = "")
         {
             // Clear console so it can be updated. 
             Console.Clear();
@@ -175,16 +205,14 @@ namespace Maze
             Console.WriteLine("+------------------+");
         }
 
-        static string IsEntityInSpace(Entity[] entities, int x, int y)
+
+        static string IsEntityInSpace(List<Entity> entities, int x, int y)
         {
             foreach (Entity entity in entities)
             {
-                if (entity != null)
+                if (entity.position.x == x && entity.position.y == y)
                 {
-                    if (entity.position.x == x && entity.position.y == y)
-                    {
-                        return entity.sprite;
-                    }
+                    return entity.sprite;
                 }
             }
             return "";
